@@ -4,19 +4,39 @@ Handles login and logout calls, as well as everything on the login page.
 module.exports = function(app){
   var User = require('./../database/models/User.js');
   var mongoose = require('mongoose');
+  mongoose.connect(app.get('db-port'));
 
+  // Require user information exists.
+  function requireLogin(req, res, next){
+    if(!req.user){
+      res.redirect('/login');
+    }else{
+      next();
+    }
+  }
 
-  //Handle logins.
+  // Redirect common index page names to /login.
+  commonURLS = ['/home', '/', '/index'];
+  for(i in commonURLS){
+    app.get(commonURLS[i], function(req, res){
+      res.render('login.pug');
+    })
+  }
+
+  // Handle Login page callls.
+  app.get('/login', requireLogin, function(req, res){
+    res.render('todos.pug', {todos: req.user.todos})
+  });
+
+  // Handle initial logins. Different from checking sessions.
   app.post('/login', function(req, res){
     if(req.body.name && req.body.password){
-      mongoose.connect(app.get('db-port'));
-
       User.findOne({username: req.body.name}, function(err, user){
         if(!user){
           res.render('login.pug', {message: 'Incorrect username or password'});
         }else if(req.body.password === user.password){
           req.session.user = user;
-          res.render('todo.pug', {todo: user.todo})
+          res.render('todos.pug', {todos: user.todos});
         }
       });
     }
@@ -24,9 +44,7 @@ module.exports = function(app){
 
   // Handle account creation.
   app.post('/create', function(req, res){
-    mongoose.connect(app.get('db-port'));
-
-    User.findOne({username: req.body.un}, function(err, user){
+    User.findOne({username: req.body.name}, function(err, user){
       if(err != null){
         console.log(error);
         return
@@ -34,8 +52,8 @@ module.exports = function(app){
         res.render('login.pug', {message: "Someone is already using that username"});
       }else{
         new_user = new User({
-          username: req.body.un,
-          password: req.body.pw,
+          username: req.body.name,
+          password: req.body.password,
           todo: []
         });
         new_user.save();

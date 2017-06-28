@@ -1,5 +1,5 @@
 /*
-TODO: Sessions, database lists, animations and front end, socket.io chats ---> refactor
+TODO: List out todo lists, logout/deletion, socket.io chats, animations and front end ---> refactor --> deploy
 Started 6/8/17
 Brandon Wood
 */
@@ -12,11 +12,16 @@ var bodyParser = require('body-parser');
 var session = require('client-sessions');
 // Views
 var pug = require('pug');
-
+// Databse
+var mongoose = require('mongoose');
+var User = require('./database/models/User.js');
 
 // Set ports
 app.set('port', 8000 || env.PORT);
 app.set('db-port', 'mongodb://127.0.0.1/todo');
+
+// Database Connection
+mongoose.connect(app.get('db-port'));
 
 // Sessions
 app.use(session({
@@ -25,12 +30,20 @@ app.use(session({
   duration: 1000 * 60 * 5,
   activeDuration: 1000 * 60 * 5
 }));
+
 //Filter requests that don't have sessions, send those that do home.
 app.use(function(req, res, next){
-  if(!req.user){
-    res.render('login.pug');
+  if(req.session && req.session.user){
+    User.findOne({username: req.session.user.username}, function(err, user){
+      if(user && !err){
+        req.user = user;
+        delete req.user.password;
+        req.session.user = user;
+      }
+      next();
+    })
   }else{
-    res.render('todo.pug');
+    next();
   }
 });
 
@@ -47,10 +60,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Load Controllers
 var LoginController = require('./controllers/LoginController.js');
+var TodoController = require('./controllers/TodoController.js');
 var MiscController =  require('./controllers/MiscController.js');
 
 // Fire Controllers
 LoginController(app);
+TodoController(app);
 MiscController(app);
 
 

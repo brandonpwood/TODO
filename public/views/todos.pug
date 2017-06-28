@@ -1,0 +1,12 @@
+html
+  head
+  body
+    center
+      for x in todos
+        li= x
+
+      form(action = "/addlist" method = "post")
+        input(type = "text" value = "Something Todo" name = "newList")
+        br
+        input(type = "submit" value = "Submit")
+      h1= message

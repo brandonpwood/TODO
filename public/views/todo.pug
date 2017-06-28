@@ -1,16 +1,7 @@
 html
   head
-    link(rel ="shortcut icon" href= "./../images/favicon.ico")
   body
     center
-      for x in todo
-        li= x
-      br
-
-      form(action = "/addtodo" method = "post")
-        input(type = "text" value = "Something todo" name = "item")
-        br
-        input(type = "text", value  = "Username" name = "name")
-        br
-        input(type = "submit" value = "Submit")
-      h1= message
+      form(action = "/addlist" method = "post")
+        input(type = "text", name = "new_item" value = "newList")
+        input(type = "submit" action = "submit" value = "submit")
