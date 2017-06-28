@@ -1,0 +1,26 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "Simple TODO app using MongoDB, Node.js, and JQuery UI",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonpwood/TODO.git"
+  },
+  "author": "Brandon Wood",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brandonpwood/TODO/issues"
+  },
+  "homepage": "https://github.com/brandonpwood/TODO#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "client-sessions": "^0.8.0",
+    "mongodb": "^2.2.29",
+    "mongoose": "^4.10.6",
+    "pug": "^2.0.0-rc.2"
+  }
+}

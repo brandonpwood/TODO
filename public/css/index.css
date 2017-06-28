@@ -1,0 +1,9 @@
+.alert{
+  width: 20%;
+  height: 50px;
+  text-align: center;
+  background-color: red;
+  border: solid;
+  border-radius: 10px;
+
+}

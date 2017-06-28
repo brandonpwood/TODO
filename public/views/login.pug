@@ -1,0 +1,40 @@
+html
+  head
+    link(rel ="shortcut icon" href= "./../images/favicon.ico")
+    link(rel = "stylesheet", href = "./../css/index.css")
+    script(src = "./../js/index.js")
+
+  body
+    center
+      p
+        h1 Welcome!
+        h2 This is the home page
+      - if(message != null)
+          div(class = "alert")
+            h3= message
+      p
+        form(action = "/login" method = "post")
+          |Username:
+          br
+          input(type = "text", name = "username")
+          br
+          |Password:
+          br
+          input(type = "password", name = "password")
+          br
+          br
+          input(type = "submit" value = "Submit")
+      p
+        form(action="/create" method ="post")
+          h1 Create an account
+          br
+          | Username
+          br
+          input(type = "text", name = "un")
+          br
+          | Password
+          br
+          input(type = "Password", name = "pw")
+          br
+          br
+          input(type = "submit" value = "Submit")
