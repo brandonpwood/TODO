@@ -1,6 +1,6 @@
 {
   "name": "todo",
-  "version": "1.0.0",
+  "version": "1.0",
   "description": "Simple TODO app using MongoDB, Node.js, and JQuery UI",
   "main": "app.js",
   "scripts": {

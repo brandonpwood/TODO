@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var todoSchema = new Schema({
   contents: Array,
-  members: Array
+  owner: String
 });
 
 var todo = mongoose.model('todo', todoSchema);

@@ -2,11 +2,20 @@ html
   head
   body
     center
-      for x in todos
-        li= x
+      h1 These are your Todo lists. Click on one to start getting things done!
 
-      form(action = "/addlist" method = "post")
-        input(type = "text" value = "Something Todo" name = "newList")
+      each todo, i in todos
+        input(type = "button" id= "todo" value= todo, name= todo)
         br
-        input(type = "submit" value = "Submit")
+      else
+        p It doesn't look like there's anything here. Try adding some lists!
+      ul
+      form(action = "/addlist" method = "post")
+        input(type = "text" value = "List Name" name = "newList")
+        ul
+        ul
+        input(type = "submit" value = "Add")
       h1= message
+
+    script(src="https://code.jquery.com/jquery-3.2.1.js")
+    script(src = "./../js/todos.js")

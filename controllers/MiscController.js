@@ -7,7 +7,9 @@ module.exports = function(app){
   app.use(function(req, res){
     res.render('error.pug',
     {title: error_title, message: error_message, error: 404});
-    console.log("Failed request made at " +  req.url);
+    if(req.url != '/favicon.ico'){
+      console.log("Failed request made at " +  req.url);
+    }
   });
 
   // Handle 500 errors

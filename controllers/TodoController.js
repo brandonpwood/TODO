@@ -25,34 +25,39 @@ module.exports = function(app){
         req.session.reset();
         res.render('login.pug');
       }else{
-        user.todos.push(req.body.newList);
-        user.save(function(err, newUser){
-          console.log('Creating new list...')
-          if(err){
-            console.log('Error saving: ' + user + error);
-            req.session.reset();
-            res.render('login.pug');
-          }else{
-            req.user = newUser;
-            delete req.user.password;
-            req.session.User = newUser;
-            console.log('Saving list...');
-            newList = new Todo({
-              contents: ['Add things to me!'],
-              members: [user._id]
-            });
-            newList.save(function(err, newList){
-              if(err){
-                console.log('Failed to make list: ' + err);
-                req.session.reset();
-                res.render('login.pug');
-              }else{
-                console.log("List saved!");
-                res.render('todos.pug', {todos: user.todos});
-              }
-            });
-          }
-        });
+        if(user.todos.includes(req.body.newList)){
+          res.render('todos.pug',
+          {message: 'Todo already exists', todos: user.todos});
+        }else{
+          user.todos.push(req.body.newList);
+          user.save(function(err, newUser){
+            console.log('Creating new list...');
+            if(err){
+              console.log('Error saving: ' + user + error);
+              req.session.reset();
+              res.render('login.pug');
+            }else{
+              req.user = newUser;
+              delete req.user.password;
+              req.session.User = newUser;
+              console.log('Saving list...');
+              newList = new Todo({
+                contents: ['Add things to me!'],
+                owner: user._id
+              });
+              newList.save(function(err, newList){
+                if(err){
+                  console.log('Failed to make list: ' + err);
+                  req.session.reset();
+                  res.render('login.pug');
+                }else{
+                  console.log("List saved!");
+                  res.render('todos.pug', {todos: user.todos});
+                }
+              });
+            }
+          });
+        }
       }
     })
   });
