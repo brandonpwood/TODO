@@ -1,5 +1,5 @@
 /*
-TODO: List out todo lists, front end js, logout/deletion, socket.io chats, animations and front end ---> refactor --> deploy(aws?)
+TODO: front end js, logout/list deletes/account deletes, socket.io chats, animations and front end --> deploy(aws?)
 Started 6/8/17
 Brandon Wood
 */
@@ -38,6 +38,7 @@ app.use(function(req, res, next){
       if(user && !err){
         req.user = user;
         delete req.user.password;
+        delete req.user.todos;
         req.session.user = user;
       }
       next();

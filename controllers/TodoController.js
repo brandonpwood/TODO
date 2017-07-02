@@ -1,4 +1,4 @@
-/*
+false/*
 Handles database manipulations with todo lists. Doesn't handles calls to /todo.
 */
 module.exports = function(app){
@@ -17,47 +17,54 @@ module.exports = function(app){
     }
   }
 
-  // Adding new lsits.
-  app.post('/addlist', requireLogin, function(req, res){
-    User.findOne({username: req.user.username}, function(err, user){
-      if(err || !user){
-        console.log("Failed to find" +  req.user.username);
-        req.session.reset();
-        res.render('login.pug');
-      }else{
-        if(user.todos.includes(req.body.newList)){
-          res.render('todos.pug',
-          {message: 'Todo already exists', todos: user.todos});
+  /*Quiet requests take a call to do something to a database from AJAX,
+    and respond with the status of the save..*/
+
+  // Adding new lsits without rendering. USed for quit AJAX calls.
+  app.post('/addlistquiet', requireLogin, function(req, res){
+    if(req.body){
+      User.findOne({username: req.user.username}, function(err, user){
+        check = true;
+        user.todos.forEach(function(todo){
+          if(todo.name === req.body.name){
+            check = false;
+          }
+        });
+
+        if(!user || err || !check){
+          if(!check){
+            res.send("List already exists");
+          }else{
+            res.send("Server error. Please Try again later.");
+          }
         }else{
-          user.todos.push(req.body.newList);
+          user.todos.push(req.body);
           user.save(function(err, newUser){
-            console.log('Creating new list...');
-            if(err){
-              console.log('Error saving: ' + user + error);
-              req.session.reset();
-              res.render('login.pug');
-            }else{
-              req.user = newUser;
-              delete req.user.password;
-              req.session.User = newUser;
-              console.log('Saving list...');
-              newList = new Todo({
-                contents: ['Add things to me!'],
-                owner: user._id
-              });
-              newList.save(function(err, newList){
-                if(err){
-                  console.log('Failed to make list: ' + err);
-                  req.session.reset();
-                  res.render('login.pug');
-                }else{
-                  console.log("List saved!");
-                  res.render('todos.pug', {todos: user.todos});
-                }
-              });
-            }
+            if(!err){
+              res.send(true);
+            }else throw err;
           });
         }
+      });
+    }else{
+      res.send('No body recieved');
+    }
+  });
+
+
+  app.post('/deletelistquiet', requireLogin, function(req, res){
+    User.findOne({username: req.user.username}, function(err, user){
+      if(!user || err || !req.body){
+        res.send("Server error");
+      }else{
+        user.todos.splice(user.todos.indexOf(req.body.name, 1));
+        user.save(function(err, newUser){
+          if(!newUser || err){
+            res.send("Server error");
+          }else{
+            res.send(true);
+          }
+        })
       }
     })
   });

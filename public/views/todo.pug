@@ -1,9 +1,0 @@
-html
-  head
-  body
-    center
-      for each item, i in contents
-        li= item
-      form(action = "/additem" method = "post")
-        input(type = "text", name = "new_item" value = "newList")
-        input(type = "submit" action = "submit" value = "submit")

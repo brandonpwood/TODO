@@ -1,21 +1,28 @@
 html
   head
+    title Todo
   body
     center
       h1 These are your Todo lists. Click on one to start getting things done!
+      div(class = "holder")
+        each todo, i in todos
+          div(class = todo.name + "-holder")
+            input(type = "button" class= "todo" value= todo.name name = todo.name)
+            input(type = "button" class = "clsbtn" value= "Close " + todo.name name = todo.name)
+            br
+        else
+          p It doesn't look like there's anything here. Try adding some lists!
 
-      each todo, i in todos
-        input(type = "button" id= "todo" value= todo, name= todo)
-        br
-      else
-        p It doesn't look like there's anything here. Try adding some lists!
       ul
-      form(action = "/addlist" method = "post")
-        input(type = "text" value = "List Name" name = "newList")
-        ul
-        ul
-        input(type = "submit" value = "Add")
-      h1= message
+      input(type = "text" value = "List Name" class = "listtext" )
+      ul
+      ul
+      input(class= "add" type = "button" value = "Add")
 
-    script(src="https://code.jquery.com/jquery-3.2.1.js")
+      h1= message
+      br
+      form(action = "logout", method = "get")
+        input(type = "submit" value = "Logout")
+
+    script(src = "./../js/jquery-3.2.1.min.js")
     script(src = "./../js/todos.js")
