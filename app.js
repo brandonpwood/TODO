@@ -58,6 +58,7 @@ app.use(express.static('./public'));
 
 // Connect body parser
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // Load Controllers
 var LoginController = require('./controllers/LoginController.js');

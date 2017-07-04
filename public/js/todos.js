@@ -4,14 +4,14 @@ function parse(elem){
 }
 // Add new lists
 $(document).on('click', '.add', function(){
+  var contents = ['You should add some things todo!','Like this'];
   var data = {
       name: $(':text.listtext').val(),
-      contents: ['You should add some things todo!']
+      contents: contents
   }
-
   $.post('/addlistquiet', data, function(res, status){
     if(res === true){
-      console.log(data.name)
+      // Display on page
       var btn = '<input type = "button" value = "'
       + data.name
       + '" name = "'
@@ -24,10 +24,19 @@ $(document).on('click', '.add', function(){
       + data.name
       + '" class = "clsbtn"/>';
 
+      var items = ''
+      data.contents.forEach(function(item){
+        items = items + '<li>' + item + '</li>';
+      });
+
       var holder = '<div class = "'
       + data.name
       + '-holder">'
-      + btn + close + ' <br/> </div>';
+      + btn + close + ''
+      + items
+      +'<br/> </div>';
+
+
 
       $('.holder').append(holder);
 
@@ -53,4 +62,18 @@ $(document).on('click', '.clsbtn', function(){
     }
   });
 });
-// Add items to lists
+// Toggle list displays.
+function wow(item){
+  if(item.style.display != 'none'){
+    item.style.display = 'none';
+  }else{
+    item.style.display = 'auto';
+  }
+}
+$(document).on('click', '.btn', function(){
+  var holder = $('.' + parse(this.name) + '-holder');
+  var items = holder.find('li');
+  items.each(function(i){
+    $(items[i]).toggle();
+  })
+});

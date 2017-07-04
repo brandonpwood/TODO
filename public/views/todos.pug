@@ -7,8 +7,10 @@ html
       div(class = "holder")
         each todo, i in todos
           div(class = todo.name + "-holder")
-            input(type = "button" class= "todo" value= todo.name name = todo.name)
+            input(type = "button" class= "btn" value= todo.name name = todo.name)
             input(type = "button" class = "clsbtn" value= "Close " + todo.name name = todo.name)
+            each item in todo["contents[]"]
+              li= item
             br
         else
           p It doesn't look like there's anything here. Try adding some lists!

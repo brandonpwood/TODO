@@ -1,4 +1,4 @@
-false/*
+/*
 Handles database manipulations with todo lists. Doesn't handles calls to /todo.
 */
 module.exports = function(app){
