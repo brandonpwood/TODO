@@ -62,14 +62,6 @@ $(document).on('click', '.clsbtn', function(){
     }
   });
 });
-// Toggle list displays.
-function wow(item){
-  if(item.style.display != 'none'){
-    item.style.display = 'none';
-  }else{
-    item.style.display = 'auto';
-  }
-}
 $(document).on('click', '.btn', function(){
   var holder = $('.' + parse(this.name) + '-holder');
   var items = holder.find('li');

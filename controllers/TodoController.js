@@ -69,3 +69,21 @@ module.exports = function(app){
     })
   });
 }
+
+// Handle edits to lists.
+app.post('/editlistsilent', function(req, res){
+  User.findOne({username: req.user.username}, function(err, user){
+    if(!user || err){
+      res.send('Server Error');
+    }else{
+      User.todos[req.body.name] = req.body.list
+      User.save(function(err, newUser){
+        if(!newUser || err){
+          req.send("Server Error");
+        }else{
+          res.send('Saved Successful');
+        }
+      });
+    }
+  })
+});
